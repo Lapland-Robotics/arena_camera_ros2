@@ -4,11 +4,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: lucid-vision-driver-image
+    container_name: lucid-vision-driver-container
     volumes:
       - .:/arena_camera_ros2
-
     network_mode: host
     command:
-      ["bash"]
+      ["ros2", "run", "arena_camera_node", "start", "--ros-args", "-p", "pixelformat:=rgb8", "-p", "gain:=10.0"]
     # lucid devices container can see
       #  ["/ArenaSDK_Linux_x64/precompiledExamples/./IpConfigUtility", "/list"]
