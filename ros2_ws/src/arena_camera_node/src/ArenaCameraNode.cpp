@@ -16,15 +16,11 @@ void ArenaCameraNode::parse_parameters_()
   std::string nextParameterToDeclare = "";
   try {
     nextParameterToDeclare = "serial";
-    if (this->has_parameter("serial")) {
-        int serial_integer;
-        this->get_parameter<int>("serial", serial_integer);
-        serial_ = std::to_string(serial_integer);
-        is_passed_serial_ = true;
-} else {
-    serial_ = ""; // Set it to an empty string to indicate it's not passed.
-    is_passed_serial_ = false;
-}
+    // has_parameter() only sees declared params, so serial must be declared.
+    // 0 means "not passed" -> open the first discovered camera.
+    int serial_integer = this->declare_parameter<int>("serial", 0);
+    serial_ = std::to_string(serial_integer);
+    is_passed_serial_ = serial_integer != 0;
     
     nextParameterToDeclare = "pixelformat";
     pixelformat_ros_ = this->declare_parameter("pixelformat", "");
